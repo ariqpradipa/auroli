@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../pages/account_page.dart';
 import '../pages/energy_page.dart';
 import '../pages/progress_page.dart';
 import '../pages/sleep_page.dart';
@@ -22,7 +21,6 @@ class _MainNavigationState extends State<MainNavigation> {
     SleepPage(themeProvider: widget.themeProvider),
     EnergyPage(themeProvider: widget.themeProvider),
     ProgressPage(themeProvider: widget.themeProvider),
-    AccountPage(themeProvider: widget.themeProvider),
   ];
 
   @override
@@ -54,10 +52,6 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up),
             label: 'Progress',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
           ),
         ],
       ),

@@ -15,7 +15,6 @@ class AccountPage extends StatelessWidget {
         title: const Text('Account'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         elevation: 0,
-        automaticallyImplyLeading: false, // Remove back button since this is a tab
       ),
       body: Center(
         child: Padding(
