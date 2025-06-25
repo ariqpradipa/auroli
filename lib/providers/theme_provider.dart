@@ -65,6 +65,12 @@ class ThemeProvider extends ChangeNotifier {
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
       ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: Colors.deepPurple,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        elevation: 8,
+      ),
     );
   }
 
@@ -86,6 +92,12 @@ class ThemeProvider extends ChangeNotifier {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
         ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: Colors.deepPurpleAccent,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Color(0xFF1E1E1E),
+        elevation: 8,
       ),
     );
   }
