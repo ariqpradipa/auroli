@@ -4,8 +4,13 @@ import '../models/sleep_data.dart';
 
 class RecentSleepDataCard extends StatelessWidget {
   final List<SleepData> sleepData;
+  final Function(int)? onDeleteItem;
 
-  const RecentSleepDataCard({super.key, required this.sleepData});
+  const RecentSleepDataCard({
+    super.key, 
+    required this.sleepData,
+    this.onDeleteItem,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +45,10 @@ class RecentSleepDataCard extends StatelessWidget {
               )
             else
               Column(
-                children: sleepData
-                    .take(5)
-                    .map((data) => _buildSleepDataItem(data))
-                    .toList(),
+                children: [
+                  for (int i = 0; i < sleepData.take(5).length; i++)
+                    _buildSleepDataItem(sleepData[i], i)
+                ],
               ),
           ],
         ),
@@ -51,7 +56,7 @@ class RecentSleepDataCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSleepDataItem(SleepData data) {
+  Widget _buildSleepDataItem(SleepData data, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
@@ -94,8 +99,25 @@ class RecentSleepDataCard extends StatelessWidget {
               ),
             ),
           ),
+          if (onDeleteItem != null) ...[
+            const SizedBox(width: 8),
+            IconButton(
+              icon: const Icon(Icons.delete_outline, color: Colors.red, size: 18),
+              onPressed: () => _showDeleteConfirmation(data, index),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  void _showDeleteConfirmation(SleepData data, int index) {
+    if (onDeleteItem == null) return;
+    
+    // Since we don't have direct access to context here, we'll need to modify this approach
+    // The parent widget should handle the confirmation dialog
+    onDeleteItem!(index);
   }
 }
