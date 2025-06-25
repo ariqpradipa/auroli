@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../pages/energy_page.dart';
 import '../pages/progress_page.dart';
-import '../pages/sleep_page.dart';
+import '../pages/sleep/sleep_page.dart';
 import '../providers/theme_provider.dart';
 
 class MainNavigation extends StatefulWidget {
