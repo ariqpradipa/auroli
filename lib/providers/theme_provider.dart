@@ -5,7 +5,7 @@ enum ThemeOption { light, dark, system }
 
 class ThemeProvider extends ChangeNotifier {
   static const String _themeKey = 'theme_preference';
-  
+
   ThemeOption _themeOption = ThemeOption.system;
   late SharedPreferences _prefs;
 
@@ -18,7 +18,8 @@ class ThemeProvider extends ChangeNotifier {
       case ThemeOption.dark:
         return true;
       case ThemeOption.system:
-        return WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+        return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark;
     }
   }
 
@@ -55,10 +56,7 @@ class ThemeProvider extends ChangeNotifier {
         seedColor: Colors.deepPurple,
         brightness: Brightness.light,
       ),
-      appBarTheme: const AppBarTheme(
-        elevation: 0,
-        centerTitle: true,
-      ),
+      appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
       cardTheme: const CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -83,10 +81,7 @@ class ThemeProvider extends ChangeNotifier {
         seedColor: Colors.deepPurple,
         brightness: Brightness.dark,
       ),
-      appBarTheme: const AppBarTheme(
-        elevation: 0,
-        centerTitle: true,
-      ),
+      appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
       cardTheme: const CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(

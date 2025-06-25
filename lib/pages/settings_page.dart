@@ -61,12 +61,7 @@ class SettingsPage extends StatelessWidget {
             'Light',
             Icons.light_mode,
           ),
-          _buildThemeOption(
-            context,
-            ThemeOption.dark,
-            'Dark',
-            Icons.dark_mode,
-          ),
+          _buildThemeOption(context, ThemeOption.dark, 'Dark', Icons.dark_mode),
           _buildThemeOption(
             context,
             ThemeOption.system,
@@ -85,15 +80,12 @@ class SettingsPage extends StatelessWidget {
     IconData icon,
   ) {
     final isSelected = themeProvider.themeOption == option;
-    
+
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
       trailing: isSelected
-          ? Icon(
-              Icons.check,
-              color: Theme.of(context).colorScheme.primary,
-            )
+          ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
           : null,
       onTap: () => themeProvider.setTheme(option),
       selected: isSelected,

@@ -12,7 +12,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final ThemeProvider themeProvider;
-  
+
   const MyApp({super.key, required this.themeProvider});
 
   @override
@@ -32,5 +32,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

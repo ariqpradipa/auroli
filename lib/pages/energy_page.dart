@@ -5,7 +5,7 @@ import 'account_page.dart';
 
 class EnergyPage extends StatelessWidget {
   final ThemeProvider themeProvider;
-  
+
   const EnergyPage({super.key, required this.themeProvider});
 
   @override
@@ -23,18 +23,15 @@ class EnergyPage extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => AccountPage(themeProvider: themeProvider),
+                    builder: (context) =>
+                        AccountPage(themeProvider: themeProvider),
                   ),
                 );
               },
               child: const CircleAvatar(
                 radius: 18,
                 backgroundColor: Colors.deepPurple,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 20,
-                ),
+                child: Icon(Icons.person, color: Colors.white, size: 20),
               ),
             ),
           ),
@@ -46,27 +43,17 @@ class EnergyPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.bolt,
-                size: 80,
-                color: Colors.orange,
-              ),
+              Icon(Icons.bolt, size: 80, color: Colors.orange),
               SizedBox(height: 24),
               Text(
                 'Energy Levels',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               Text(
                 'Monitor your energy levels throughout the day.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
           ),

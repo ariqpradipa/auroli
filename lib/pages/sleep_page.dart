@@ -5,7 +5,7 @@ import 'account_page.dart';
 
 class SleepPage extends StatelessWidget {
   final ThemeProvider themeProvider;
-  
+
   const SleepPage({super.key, required this.themeProvider});
 
   @override
@@ -23,18 +23,15 @@ class SleepPage extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => AccountPage(themeProvider: themeProvider),
+                    builder: (context) =>
+                        AccountPage(themeProvider: themeProvider),
                   ),
                 );
               },
               child: const CircleAvatar(
                 radius: 18,
                 backgroundColor: Colors.deepPurple,
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 20,
-                ),
+                child: Icon(Icons.person, color: Colors.white, size: 20),
               ),
             ),
           ),
@@ -46,27 +43,17 @@ class SleepPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.bedtime,
-                size: 80,
-                color: Colors.indigo,
-              ),
+              Icon(Icons.bedtime, size: 80, color: Colors.indigo),
               SizedBox(height: 24),
               Text(
                 'Sleep Tracking',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 16),
               Text(
                 'Track your sleep patterns and improve your rest quality.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             ],
           ),

@@ -7,7 +7,7 @@ import '../providers/theme_provider.dart';
 
 class MainNavigation extends StatefulWidget {
   final ThemeProvider themeProvider;
-  
+
   const MainNavigation({super.key, required this.themeProvider});
 
   @override
@@ -26,10 +26,7 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -39,14 +36,8 @@ class _MainNavigationState extends State<MainNavigation> {
         },
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bedtime),
-            label: 'Sleep',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bolt),
-            label: 'Energy',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.bedtime), label: 'Sleep'),
+          BottomNavigationBarItem(icon: Icon(Icons.bolt), label: 'Energy'),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up),
             label: 'Progress',

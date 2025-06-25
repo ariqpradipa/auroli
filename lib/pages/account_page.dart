@@ -5,7 +5,7 @@ import 'settings_page.dart';
 
 class AccountPage extends StatelessWidget {
   final ThemeProvider themeProvider;
-  
+
   const AccountPage({super.key, required this.themeProvider});
 
   @override
@@ -25,28 +25,18 @@ class AccountPage extends StatelessWidget {
               const CircleAvatar(
                 radius: 60,
                 backgroundColor: Colors.deepPurple,
-                child: Icon(
-                  Icons.person,
-                  size: 60,
-                  color: Colors.white,
-                ),
+                child: Icon(Icons.person, size: 60, color: Colors.white),
               ),
               const SizedBox(height: 24),
               const Text(
                 'Your Account',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               const Text(
                 'Manage your profile and app settings.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 32),
               Card(
@@ -70,7 +60,8 @@ class AccountPage extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => SettingsPage(themeProvider: themeProvider),
+                        builder: (context) =>
+                            SettingsPage(themeProvider: themeProvider),
                       ),
                     );
                   },
@@ -84,7 +75,9 @@ class AccountPage extends StatelessWidget {
                   onTap: () {
                     // TODO: Implement help & support navigation
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Help & Support - Coming Soon')),
+                      const SnackBar(
+                        content: Text('Help & Support - Coming Soon'),
+                      ),
                     );
                   },
                 ),
