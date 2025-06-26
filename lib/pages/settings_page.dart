@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../providers/theme_provider.dart';
+import 'sleep/services/sleep_data_service.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   final ThemeProvider themeProvider;
 
   const SettingsPage({super.key, required this.themeProvider});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final SleepDataService _sleepDataService = SleepDataService();
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +30,10 @@ class SettingsPage extends StatelessWidget {
           _buildSectionTitle('Appearance'),
           const SizedBox(height: 8),
           _buildThemeSelector(context),
+          const SizedBox(height: 32),
+          _buildSectionTitle('Data Management'),
+          const SizedBox(height: 8),
+          _buildDataManagementSection(context),
           const SizedBox(height: 32),
           _buildSectionTitle('About'),
           const SizedBox(height: 8),
@@ -52,7 +64,7 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.palette_outlined),
             title: const Text('Theme'),
-            subtitle: Text(_getThemeText(themeProvider.themeOption)),
+            subtitle: Text(_getThemeText(widget.themeProvider.themeOption)),
           ),
           const Divider(height: 1),
           _buildThemeOption(
@@ -79,7 +91,7 @@ class SettingsPage extends StatelessWidget {
     String title,
     IconData icon,
   ) {
-    final isSelected = themeProvider.themeOption == option;
+    final isSelected = widget.themeProvider.themeOption == option;
 
     return ListTile(
       leading: Icon(icon),
@@ -87,9 +99,93 @@ class SettingsPage extends StatelessWidget {
       trailing: isSelected
           ? Icon(Icons.check, color: Theme.of(context).colorScheme.primary)
           : null,
-      onTap: () => themeProvider.setTheme(option),
+      onTap: () => widget.themeProvider.setTheme(option),
       selected: isSelected,
     );
+  }
+
+  Widget _buildDataManagementSection(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.download_outlined),
+            title: const Text('Export Sleep Data'),
+            subtitle: const Text('Download your sleep data as JSON'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => _exportSleepData(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Export sleep data as JSON
+  Future<void> _exportSleepData() async {
+    try {
+      final jsonString = await _sleepDataService.exportSleepDataAsJson();
+
+      if (jsonString != null && mounted) {
+        // In a real app, you would use a file picker or share dialog
+        // For now, we'll just show the data and copy to clipboard functionality
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Export Sleep Data'),
+              content: SizedBox(
+                width: double.maxFinite,
+                height: 300,
+                child: SingleChildScrollView(
+                  child: SelectableText(
+                    jsonString,
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
+        );
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Sleep data exported successfully! Data shown in dialog.',
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to export sleep data. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error exporting sleep data: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildAboutSection(BuildContext context) {

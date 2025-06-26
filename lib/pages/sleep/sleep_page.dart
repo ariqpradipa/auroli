@@ -194,72 +194,6 @@ class _SleepPageState extends State<SleepPage> {
     }
   }
 
-  /// Export sleep data as JSON
-  Future<void> _exportSleepData() async {
-    try {
-      final jsonString = await _sleepDataService.exportSleepDataAsJson();
-
-      if (jsonString != null && mounted) {
-        // In a real app, you would use a file picker or share dialog
-        // For now, we'll just show the data and copy to clipboard functionality
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Export Sleep Data'),
-              content: SizedBox(
-                width: double.maxFinite,
-                height: 300,
-                child: SingleChildScrollView(
-                  child: SelectableText(
-                    jsonString,
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Close'),
-                ),
-              ],
-            );
-          },
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Sleep data exported successfully! Data shown in dialog.',
-            ),
-            backgroundColor: Colors.green,
-          ),
-        );
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to export sleep data. Please try again.'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error exporting sleep data: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
   /// Refresh data from storage
   Future<void> _refreshData() async {
     try {
@@ -290,25 +224,12 @@ class _SleepPageState extends State<SleepPage> {
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               switch (value) {
-                case 'export':
-                  _exportSleepData();
-                  break;
                 case 'clear':
                   _clearAllSleepData();
                   break;
               }
             },
             itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<String>(
-                value: 'export',
-                child: Row(
-                  children: [
-                    Icon(Icons.download, size: 20),
-                    SizedBox(width: 8),
-                    Text('Export Data'),
-                  ],
-                ),
-              ),
               const PopupMenuItem<String>(
                 value: 'clear',
                 child: Row(
