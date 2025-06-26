@@ -33,7 +33,7 @@ class _SleepPageState extends State<SleepPage> {
     try {
       final loadedData = await _sleepDataService.loadSleepDataList();
       final statistics = await _sleepDataService.getSleepStatistics();
-      
+
       setState(() {
         _sleepDataList.clear();
         _sleepDataList.addAll(loadedData);
@@ -58,7 +58,7 @@ class _SleepPageState extends State<SleepPage> {
   /// Remove sleep data entry with confirmation
   Future<void> _confirmAndRemoveSleepData(int index) async {
     if (index < 0 || index >= _sleepDataList.length) return;
-    
+
     final sleepData = _sleepDataList[index];
     final confirmed = await showDialog<bool>(
       context: context,
@@ -95,7 +95,7 @@ class _SleepPageState extends State<SleepPage> {
   Future<void> _removeSleepData(int index) async {
     try {
       final success = await _sleepDataService.removeSleepData(index);
-      
+
       if (success) {
         // Reload data and statistics
         await _loadSleepData();
@@ -158,7 +158,7 @@ class _SleepPageState extends State<SleepPage> {
     if (confirmed == true) {
       try {
         final success = await _sleepDataService.clearAllSleepData();
-        
+
         if (success) {
           // Reload data and statistics
           await _loadSleepData();
@@ -198,7 +198,7 @@ class _SleepPageState extends State<SleepPage> {
   Future<void> _exportSleepData() async {
     try {
       final jsonString = await _sleepDataService.exportSleepDataAsJson();
-      
+
       if (jsonString != null && mounted) {
         // In a real app, you would use a file picker or share dialog
         // For now, we'll just show the data and copy to clipboard functionality
@@ -213,7 +213,10 @@ class _SleepPageState extends State<SleepPage> {
                 child: SingleChildScrollView(
                   child: SelectableText(
                     jsonString,
-                    style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                    style: const TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
@@ -229,7 +232,9 @@ class _SleepPageState extends State<SleepPage> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Sleep data exported successfully! Data shown in dialog.'),
+            content: Text(
+              'Sleep data exported successfully! Data shown in dialog.',
+            ),
             backgroundColor: Colors.green,
           ),
         );
@@ -257,14 +262,17 @@ class _SleepPageState extends State<SleepPage> {
 
   /// Refresh data from storage
   Future<void> _refreshData() async {
-    await _loadSleepData();
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Data refreshed successfully!'),
-          backgroundColor: Colors.blue,
-        ),
-      );
+    try {
+      await _loadSleepData();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error refreshing sleep data: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -282,9 +290,6 @@ class _SleepPageState extends State<SleepPage> {
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
               switch (value) {
-                case 'refresh':
-                  _refreshData();
-                  break;
                 case 'export':
                   _exportSleepData();
                   break;
@@ -294,16 +299,6 @@ class _SleepPageState extends State<SleepPage> {
               }
             },
             itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<String>(
-                value: 'refresh',
-                child: Row(
-                  children: [
-                    Icon(Icons.refresh, size: 20),
-                    SizedBox(width: 8),
-                    Text('Refresh Data'),
-                  ],
-                ),
-              ),
               const PopupMenuItem<String>(
                 value: 'export',
                 child: Row(
@@ -348,30 +343,36 @@ class _SleepPageState extends State<SleepPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  // Header section
-                  const SleepPageHeader(),
-                  const SizedBox(height: 40),
+          : RefreshIndicator(
+              onRefresh: _refreshData,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    // Header section
+                    const SleepPageHeader(),
+                    const SizedBox(height: 40),
 
-                  // Add Sleep Data Section
-                  AddSleepDataCard(onAddPressed: () => _showAddSleepDialog(context)),
+                    // Add Sleep Data Section
+                    AddSleepDataCard(
+                      onAddPressed: () => _showAddSleepDialog(context),
+                    ),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // Sleep Statistics Section
-                  SleepStatisticsCard(statistics: _sleepStatistics),
+                    // Sleep Statistics Section
+                    SleepStatisticsCard(statistics: _sleepStatistics),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // Recent Sleep Data Section
-                  RecentSleepDataCard(
-                    sleepData: _sleepDataList,
-                    onDeleteItem: _confirmAndRemoveSleepData,
-                  ),
-                ],
+                    // Recent Sleep Data Section
+                    RecentSleepDataCard(
+                      sleepData: _sleepDataList,
+                      onDeleteItem: _confirmAndRemoveSleepData,
+                    ),
+                  ],
+                ),
               ),
             ),
     );
@@ -404,7 +405,7 @@ class _SleepPageState extends State<SleepPage> {
             try {
               // Save to persistent storage
               final success = await _sleepDataService.addSleepData(sleepData);
-              
+
               if (success) {
                 // Reload data and statistics
                 await _loadSleepData();
@@ -421,7 +422,9 @@ class _SleepPageState extends State<SleepPage> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Failed to save sleep data. Please try again.'),
+                      content: Text(
+                        'Failed to save sleep data. Please try again.',
+                      ),
                       backgroundColor: Colors.red,
                     ),
                   );
