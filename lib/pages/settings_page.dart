@@ -115,6 +115,14 @@ class _SettingsPageState extends State<SettingsPage> {
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () => _exportSleepData(),
           ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.delete_forever_outlined),
+            title: const Text('Clear All Sleep Data'),
+            subtitle: const Text('Permanently delete all sleep records'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => _clearAllSleepData(),
+          ),
         ],
       ),
     );
@@ -184,6 +192,63 @@ class _SettingsPageState extends State<SettingsPage> {
             backgroundColor: Colors.red,
           ),
         );
+      }
+    }
+  }
+
+  /// Clear all sleep data with confirmation
+  Future<void> _clearAllSleepData() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear All Sleep Data'),
+          content: const Text(
+            'Are you sure you want to delete all sleep data? This action cannot be undone.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Delete All'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      try {
+        final success = await _sleepDataService.clearAllSleepData();
+
+        if (success && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('All sleep data cleared successfully!'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to clear sleep data. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error clearing sleep data: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     }
   }
